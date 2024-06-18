@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome to Chat App</title>
+</head>
+<body>
+<h1>Welcome to Chat App</h1>
+<form th:action="@{/login}" method="post">
+    <label>Enter your name:</label>
+    <input type="text" name="username" required>
+    <button type="submit">Join Chat</button>
+</form>
+
+<h2>Available Channels</h2>
+<ul>
+    <li th:each="channel : ${channels}">
+        <a th:href="@{/channels/{id}(id=${channel.id})}" th:text="${channel.name}"></a>
+    </li>
+</ul>
+</body>
+</html>

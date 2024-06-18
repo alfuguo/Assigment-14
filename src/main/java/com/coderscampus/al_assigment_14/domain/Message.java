@@ -1,24 +1,13 @@
 package com.coderscampus.al_assigment_14.domain;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@Entity
 @Data
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Message {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String message;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    private Long id;
     private User user;
-    @ManyToOne
-    @JoinColumn(name = "channel_id")
-    private Channel channel;
+    private String content;
+    private Long channelId;
 }
