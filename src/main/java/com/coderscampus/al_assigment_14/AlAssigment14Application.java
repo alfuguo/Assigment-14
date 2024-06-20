@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AlAssigment14Application {
 
     public static void main(String[] args) {
+
         SpringApplication.run(AlAssigment14Application.class, args);
     }
 

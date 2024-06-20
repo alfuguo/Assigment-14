@@ -6,36 +6,52 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 @Repository
 public class ChannelRepository {
-    private final Map<Long, Channel> channelMap = new ConcurrentHashMap<>();
-    private final MessageRepository messageRepository;
-
-    public ChannelRepository(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
-    }
+    private final Map<Long, Channel> channels = new ConcurrentHashMap<>();
+    private final AtomicLong idGenerator = new AtomicLong();
 
     public Channel save(Channel channel) {
         if (channel.getId() == null) {
-            channel.setId(generateId());
+            channel.setId(idGenerator.incrementAndGet());
         }
-        channelMap.put(channel.getId(), channel);
+        channels.put(channel.getId(), channel);
         return channel;
     }
-    private long idGenerator = 1;
-    private synchronized long generateId() {
-        return idGenerator++;
-    }
 
-    public Channel findById(long id) {
-        return channelMap.get(id);
+    public Channel findById(Long id) {
+        return channels.get(id);
     }
 
     public List<Channel> findAll() {
-        return new ArrayList<>(channelMap.values());
+        return new ArrayList<>(channels.values());
     }
+    public void delete(Channel channel) {
+        channels.remove(channel.getId());
+    }
+
+    public void deleteById(Long id) {
+        channels.remove(id);
+    }
+
+    public boolean exists(Long id) {
+        return channels.containsKey(id);
+    }
+
+    public long count() {
+        return channels.size();
+    }
+
+    public Channel update(Channel channel) {
+        if (channel.getId() != null && channels.containsKey(channel.getId())) {
+            channels.put(channel.getId(), channel);
+            return channel;
+        }
+        return null;
+}
 }
 
 

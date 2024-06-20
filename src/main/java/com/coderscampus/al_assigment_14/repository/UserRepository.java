@@ -5,36 +5,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
-public class UserRepository  {
-    private Map<Long, User> userMap = new HashMap<>();
+public class UserRepository {
+    private final Map<Long, User> users = new ConcurrentHashMap<>();
+    private final AtomicLong idGenerator = new AtomicLong();
 
     public User save(User user) {
         if (user.getId() == null) {
-            user.setId(generateId());
+            user.setId(idGenerator.incrementAndGet());
         }
-        userMap.put(user.getId(), user);
+        users.put(user.getId(), user);
         return user;
     }
 
-    private long idGenerator = 1;
-    private synchronized long generateId() {
-        return idGenerator++;
-    }
-
-    public User findById(long id) {
-        return userMap.get(id);
+    public User findById(Long id) {
+        return users.get(id);
     }
 
     public User findByUsername(String username) {
-        return userMap.values().stream()
+        return users.values().stream()
                 .filter(user -> user.getUsername().equals(username))
                 .findFirst()
                 .orElse(null);
     }
-    public List<User> findAll() {
-        return new ArrayList<>(userMap.values());
+
+    public void delete(User user) {
+        users.remove(user.getId());
     }
 }
 

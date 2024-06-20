@@ -9,17 +9,19 @@ import java.util.List;
 
 @Service
 public class MessageService {
-    private final MessageRepository messageRepository;
+
     @Autowired
-    public MessageService(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
+    private MessageRepository messageRepository;
+
+    public Message createMessage(Message message) {
+        return messageRepository.save(message);
     }
 
-    public Message saveMessage(Message message) {
-        messageRepository.save(message);
-        return message;
+    public List<Message> getMessagesByChannelId(Long channelId) {
+        return messageRepository.findByChannelId(channelId);
     }
-    public List<Message> getByChanneId(Long channeId) {
-        return messageRepository.findByChannelId(channeId);
+
+    public void deleteMessage(Long id) {
+        messageRepository.deleteById(id);
     }
 }
