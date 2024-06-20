@@ -1,44 +1,50 @@
-$(document).ready(function() {
-    var channelId = $('#channel-id').val();
-    var userId = $('#user-id').val();
+document.addEventListener('DOMContentLoaded', function() {
+    const channelId = document.getElementById('channel-id').value;
+    const userId = document.getElementById('user-id').value;
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+    const messagesContainer = document.getElementById('messages');
 
     function sendMessage() {
-        var content = $('#message-input').val();
+        const content = messageInput.value;
         if (content.trim() !== '') {
-            $.ajax({
-                url: '/channels/' + channelId + '/messages',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ content: content }),
-                success: function() {
-                    $('#message-input').val('');
+            fetch('/channels/' + channelId + '/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: content }),
+            })
+                .then(response => response.json())
+                .then(() => {
+                    messageInput.value = '';
                     getMessages(); // Refresh messages immediately after sending
-                }
-            });
+                })
+                .catch(error => console.error('Error:', error));
         }
     }
 
     function getMessages() {
-        $.get('/channels/' + channelId + '/messages', function(messages) {
-            var messagesHtml = '';
-            messages.forEach(function(message) {
-                messagesHtml += '<p><strong>' + message.user.username + ':</strong> ' + message.content + '</p>';
-            });
-            $('#messages').html(messagesHtml);
-        });
+        fetch('/channels/' + channelId + '/messages')
+            .then(response => response.json())
+            .then(messages => {
+                let messagesHtml = '';
+                messages.forEach(function(message) {
+                    messagesHtml += `<p><strong>${message.user.username}:</strong> ${message.content}</p>`;
+                });
+                messagesContainer.innerHTML = messagesHtml;
+            })
+            .catch(error => console.error('Error:', error));
     }
 
-    $('#message-input').keypress(function(e) {
-        if (e.which == 13 && !e.shiftKey) {
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             sendMessage();
         }
     });
 
-    $('#send-button').click(function() {
-        sendMessage();
-    });
-
+    sendButton.addEventListener('click', sendMessage);
 
     getMessages();
 

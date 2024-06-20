@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-
 @Repository
 public class ChannelRepository {
     private final Map<Long, Channel> channels = new ConcurrentHashMap<>();
@@ -32,26 +31,7 @@ public class ChannelRepository {
     public void delete(Channel channel) {
         channels.remove(channel.getId());
     }
-
-    public void deleteById(Long id) {
-        channels.remove(id);
-    }
-
-    public boolean exists(Long id) {
-        return channels.containsKey(id);
-    }
-
-    public long count() {
-        return channels.size();
-    }
-
-    public Channel update(Channel channel) {
-        if (channel.getId() != null && channels.containsKey(channel.getId())) {
-            channels.put(channel.getId(), channel);
-            return channel;
-        }
-        return null;
 }
-}
+
 
 

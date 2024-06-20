@@ -41,14 +41,4 @@ public class ChannelService {
         return channelRepository.findAll();
     }
 
-    public Channel updateChannel(Channel channel) {
-        return channelRepository.save(channel);
-    }
-
-    public void deleteChannel(Long id) {
-        Channel channel = channelRepository.findById(id);
-        if (channel != null) {
-            channelRepository.delete(channel);
-        }
-    }
 }

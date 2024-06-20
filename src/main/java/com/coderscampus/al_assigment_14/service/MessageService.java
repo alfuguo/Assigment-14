@@ -4,7 +4,6 @@ import com.coderscampus.al_assigment_14.domain.Message;
 import com.coderscampus.al_assigment_14.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -21,7 +20,4 @@ public class MessageService {
         return messageRepository.findByChannelId(channelId);
     }
 
-    public void deleteMessage(Long id) {
-        messageRepository.deleteById(id);
-    }
 }
