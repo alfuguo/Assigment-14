@@ -5,14 +5,16 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<h1 th:text="${channel.name}"></h1>
-<div id="messages"></div>
-<div id="message-input-container">
-    <textarea id="message-input" placeholder="Type your message..."></textarea>
-    <button id="send-button">Send</button>
+<div class="container">
+    <h1 th:text="${channel.name}"></h1>
+    <div id="messages"></div>
+    <div id="message-input-container">
+        <textarea id="message-input" placeholder="Type your message..."></textarea>
+        <button id="send-button">Send</button>
+    </div>
+    <input type="hidden" id="channel-id" th:value="${channel.id}">
+    <input type="hidden" id="user-id" th:value="${user.id}">
 </div>
-<input type="hidden" id="channel-id" th:value="${channel.id}">
-<input type="hidden" id="user-id" th:value="${user.id}">
 
 <script th:src="@{/js/chat.js}"></script>
 </body>

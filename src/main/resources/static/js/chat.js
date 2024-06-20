@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const sendButton = document.getElementById('send-button');
     const messagesContainer = document.getElementById('messages');
 
+    let lastMessageId = 0;
+    let displayedMessageIds = new Set();
+
     function sendMessage() {
         const content = messageInput.value;
         if (content.trim() !== '') {
@@ -25,16 +28,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function getMessages() {
-        fetch('/channels/' + channelId + '/messages')
+        fetch('/channels/' + channelId + '/messages?after=' + lastMessageId)
             .then(response => response.json())
             .then(messages => {
-                let messagesHtml = '';
+                let hasNewMessages = false;
                 messages.forEach(function(message) {
-                    messagesHtml += `<p><strong>${message.user.username}:</strong> ${message.content}</p>`;
+                    if (!displayedMessageIds.has(message.id)) {
+                        appendMessage(message);
+                        displayedMessageIds.add(message.id);
+                        lastMessageId = Math.max(lastMessageId, message.id);
+                        hasNewMessages = true;
+                    }
                 });
-                messagesContainer.innerHTML = messagesHtml;
+                if (hasNewMessages) {
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
             })
             .catch(error => console.error('Error:', error));
+    }
+
+    function appendMessage(message) {
+        const messageElement = document.createElement('div');
+        messageElement.className = message.user.id === userId ? 'message self' : 'message';
+        messageElement.innerHTML = `<strong>${message.user.username}:</strong> ${message.content}`;
+        messageElement.style.opacity = '0';
+        messagesContainer.appendChild(messageElement);
+
+        // Trigger reflow to ensure the transition applies
+        messageElement.offsetHeight;
+
+        messageElement.style.opacity = '1';
     }
 
     messageInput.addEventListener('keypress', function(e) {
