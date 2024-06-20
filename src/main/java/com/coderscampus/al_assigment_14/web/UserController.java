@@ -1,6 +1,5 @@
 package com.coderscampus.al_assigment_14.web;
 
-import ch.qos.logback.core.model.Model;
 import com.coderscampus.al_assigment_14.domain.User;
 import com.coderscampus.al_assigment_14.repository.ChannelRepository;
 import com.coderscampus.al_assigment_14.repository.UserRepository;
@@ -14,14 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class WelcomeController {
+public class UserController {
     private final UserRepository userRepository;
 
     private final ChannelRepository channelRepository;
     private final ChannelService channelService;
 
     @Autowired
-    public WelcomeController(UserRepository userRepository, ChannelRepository channelRepository, ChannelService channelService) {
+    public UserController(UserRepository userRepository, ChannelRepository channelRepository, ChannelService channelService) {
         this.userRepository = userRepository;
         this.channelRepository = channelRepository;
         this.channelService = channelService;
@@ -39,9 +38,9 @@ public class WelcomeController {
 
     }
     @PostMapping("/login")
-    public String loginUser(@RequestParam String username, HttpSession session) {
+    public String  loginUser(@RequestParam String username, HttpSession session) {
         User newUser = new User();
-        userRepository.addUser(newUser);
+        userRepository.save(newUser);
         session.setAttribute("currentUser", newUser);
         return "redirect:/channels";
     }

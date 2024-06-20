@@ -15,21 +15,19 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User save(User user) {
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
     public User findById(Long userId) {
-        return userRepository.findById(userId).orElse(null);
+        return userRepository.findById(userId);
     }
     public List<User> findAll() {
         return userRepository.findAll();
     }
-    public void delete(User user) {
-       userRepository.delete(user);
-    }
+
 
 
 }

@@ -17,11 +17,12 @@ public class ChannelRepository {
         this.messageRepository = messageRepository;
     }
 
-    public synchronized void save(Channel channel) {
+    public Channel save(Channel channel) {
         if (channel.getId() == null) {
             channel.setId(generateId());
         }
         channelMap.put(channel.getId(), channel);
+        return channel;
     }
     private long idGenerator = 1;
     private synchronized long generateId() {
@@ -37,4 +38,4 @@ public class ChannelRepository {
     }
 }
 
-}
+
