@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function appendMessage(message) {
         const messageElement = document.createElement('div');
         messageElement.className = message.user.id === userId ? 'message self' : 'message';
+        messageElement.classList.add(`user-${message.user.id % 3 + 1}`);
         messageElement.innerHTML = `<strong>${message.user.username}:</strong> ${message.content}`;
         messageElement.style.opacity = '0';
         messagesContainer.appendChild(messageElement);

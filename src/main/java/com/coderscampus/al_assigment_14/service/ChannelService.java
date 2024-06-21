@@ -20,13 +20,12 @@ public class ChannelService {
     }
     private void initializeChannels() {
         if (getAllChannels().isEmpty()) {
-            Channel general = new Channel(null, "General", new ArrayList<>());
-            createChannel(general);
+            Channel channel1 = new Channel(null, "Channel One", new ArrayList<>());
+            createChannel(channel1);
 
-            Channel random = new Channel(null, "Random", new ArrayList<>());
-            createChannel(random);
+            Channel channel2 = new Channel(null, "Channel Two", new ArrayList<>());
+            createChannel(channel2);
 
-            System.out.println("Initial channels created.");
         }
     }
     public Channel createChannel(Channel channel) {
